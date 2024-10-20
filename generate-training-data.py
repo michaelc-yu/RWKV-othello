@@ -2,6 +2,7 @@ import copy
 import random
 from othello import Othello
 from mcts import MCTS
+from tokenizer import tokenize_board
 
 NUM_SIMULATIONS = 3
 MAX_DEPTH = 5
@@ -22,6 +23,8 @@ for _ in range(NUM_GAMES):
 
         datum = {}
         datum["current_board_position"] = copy.deepcopy(game.get_board())
+        datum["current_board_position"] = tokenize_board(datum["current_board_position"])
+        # print(f"tokenized board: {tokenized}")
 
         best_move, mcts_cot = mcts.best_move(color)
 

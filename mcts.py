@@ -1,6 +1,7 @@
 import copy
 import random
 from othello import Othello
+from tokenizer import tokenize_board
 
 
 class MCTS:
@@ -42,15 +43,18 @@ class MCTS:
         depth=0
         mcts_cot = []
 
-        mcts_cot.append([copy.deepcopy(simulated_game.board), simulated_game.get_score(color)])
+        tokenized_board = tokenize_board(copy.deepcopy(simulated_game.board))
+
+        mcts_cot.append([tokenized_board, simulated_game.get_score(color)])
 
         while depth < self.max_depth and simulated_game.get_legal_moves(current_color):
             random_move = random.choice(simulated_game.get_legal_moves(current_color))
             simulated_game.make_move(current_color, random_move)
             current_color = -current_color
             depth += 1
+            tokenized_board = tokenize_board(copy.deepcopy(simulated_game.board))
 
-            mcts_cot.append([copy.deepcopy(simulated_game.board), simulated_game.get_score(color)])
+            mcts_cot.append([tokenized_board, simulated_game.get_score(color)])
         
         final_score = simulated_game.get_score(color)
         return final_score, mcts_cot
